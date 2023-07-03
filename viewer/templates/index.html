@@ -1,0 +1,31 @@
+{% extends "base.html"%}
+{% block title %} Photoviewer {% endblock %}
+{% block nav %}
+    <form action="/" method="post">
+        <select id="folders" name="folders">
+            <option name="foldOption" value='Test Folder' selected></option>
+            {% for name in folder%}
+                <option name="foldOption" value="{{name}}">{{name}}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" value="submit">_</button>
+    </form>
+{% endblock %}
+{% block content %}
+    {%for list in listFiles%}
+        <div class="column">
+            {%for file in list%}
+                {% set fExtention = file.split('.') %}
+                {% set content = '/'.join([name, file]) %}
+                    {%if fExtention[1] in vidExtentions%}
+                        <video autoplay muted loop>
+                            <source src="{{url_for('static', filename=content)}}" type="video/{{fExtention[1]}}">
+                        </video>
+                    {%else%}
+                    <img src="{{url_for('static', filename=content)}}" alt="{{file}}" class="image">
+                    {%endif%}
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+{% endblock %}
